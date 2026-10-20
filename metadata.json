@@ -1,0 +1,6 @@
+{
+  "name": "Silence Designs Bot & Dashboard",
+  "description": "Premium Discord bot and management dashboard for Silence Designs ER:LC creative studio, featuring automated tickets, order workflows, marketplace, and self-hosting exports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

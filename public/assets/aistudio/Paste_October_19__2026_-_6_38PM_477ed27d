@@ -1,0 +1,1424 @@
+# LOVABLE MASTER PROMPT — SILENCE DESIGNS PREMIUM DISCORD BOT
+
+## 1. PROJECT OVERVIEW
+
+Build a complete, production-ready, premium Discord bot and web dashboard for **Silence Designs**, a professional ER:LC (Emergency Response: Liberty County) livery, graphics, clothing, and creative design team.
+
+This must be a real, functional software project, not a static website, fake dashboard, or collection of nonfunctional buttons.
+
+The project consists of:
+
+1. A Discord bot with 50 primary slash commands, plus additional utility commands and subcommands.
+2. A premium web dashboard for configuring the bot.
+3. A persistent Discord ticket system with dropdowns, buttons, and modals.
+4. An order management system for customers and designers.
+5. Professional embeds for services, advertisements, releases, giveaways, store products, support, and community announcements.
+6. Roblox group integration and Roblox username/profile information.
+7. Persistent databases for tickets, orders, applications, warnings, giveaways, hosting subscriptions, purchases, and configuration.
+8. A downloadable, organized source-code project that I can host myself.
+
+Use the supplied information in this specification. Where a setting, role, channel, image, emoji, or price is unknown, make it configurable in the dashboard rather than inventing a Discord ID or silently hardcoding a value.
+
+The visual inspiration is premium Discord community bots and professionally designed ER:LC development servers. Use that quality level while keeping the branding exclusively for Silence Designs.
+
+## 2. REQUIRED TECHNOLOGY
+
+Use the following stack:
+
+- Node.js with TypeScript.
+- discord.js v14 or a compatible current stable version.
+- A modern React + TypeScript web dashboard.
+- Tailwind CSS with a polished component system.
+- PostgreSQL with Prisma ORM for persistent data.
+- Secure authentication for dashboard administrators.
+- Discord OAuth2 for dashboard sign-in and guild selection.
+- Discord REST API for registering and managing slash commands.
+- Zod or an equivalent validation library.
+- Environment variables for every secret.
+- A documented, reproducible deployment setup using Docker and/or Node.js.
+
+Use current stable, mutually compatible packages.
+
+The Discord bot must run as an independent backend process. The web dashboard must communicate with it through a secure API. The bot must continue functioning when the dashboard is closed.
+
+Do not put the Discord bot token, OAuth client secret, database credentials, or other private secrets in frontend code.
+
+Use environment variables and supply a complete `.env.example` file with placeholders, never real credentials.
+
+If an external API, Roblox integration, Discord permission, or payment verification is unavailable, show a clear configuration warning and implement a safe fallback. Do not pretend the integration works.
+
+## 3. PREMIUM DESIGN SYSTEM
+
+Create a visually outstanding, modern, premium interface.
+
+Brand: **Silence Designs**
+
+Design direction:
+
+- Near-black and charcoal backgrounds.
+- Refined white typography.
+- Muted silver borders.
+- Deep red accents for warnings, reports, and destructive actions.
+- Blue accents for help, links, and information.
+- Subtle gradients, tasteful glass effects, and restrained shadows.
+- Rounded panels, excellent spacing, polished icons, and clean typography.
+- Responsive desktop, tablet, and mobile layouts.
+- Smooth transitions and subtle animations.
+- Consistent branding throughout Discord embeds and the web dashboard.
+
+Avoid excessive neon colors, oversized gradients, generic AI-generated layouts, and clutter.
+
+Build reusable design components so all embeds, buttons, cards, forms, and dashboard pages have consistent styling.
+
+Use placeholder image assets initially. I will provide my own PNGs, custom Discord emoji IDs, banners, logos, thumbnails, and footer images later. Make all image URLs and emoji settings editable in the dashboard.
+
+Create a branding configuration system with:
+
+- Main logo.
+- Dashboard favicon.
+- Embed author icon.
+- Default embed thumbnail.
+- Footer image.
+- Announcement banners.
+- Service icons.
+- Custom emoji mappings.
+- Default embed color.
+- Default footer text.
+- Roblox group thumbnail.
+- Optional background artwork.
+
+## 4. PROJECT FOLDER STRUCTURE
+
+Organize the codebase professionally, with separate modules for each feature.
+
+Use a structure similar to:
+
+```text
+silence-designs-bot/
+├── apps/
+│   ├── bot/
+│   │   ├── src/
+│   │   │   ├── commands/
+│   │   │   │   ├── orders/
+│   │   │   │   ├── tickets/
+│   │   │   │   ├── applications/
+│   │   │   │   ├── moderation/
+│   │   │   │   ├── marketplace/
+│   │   │   │   ├── services/
+│   │   │   │   ├── advertisements/
+│   │   │   │   ├── giveaways/
+│   │   │   │   ├── releases/
+│   │   │   │   ├── community/
+│   │   │   │   └── utility/
+│   │   │   ├── events/
+│   │   │   ├── interactions/
+│   │   │   │   ├── buttons/
+│   │   │   │   ├── modals/
+│   │   │   │   ├── select-menus/
+│   │   │   │   └── autocomplete/
+│   │   │   ├── services/
+│   │   │   ├── database/
+│   │   │   ├── integrations/
+│   │   │   │   ├── discord/
+│   │   │   │   └── roblox/
+│   │   │   ├── embeds/
+│   │   │   ├── permissions/
+│   │   │   ├── jobs/
+│   │   │   ├── config/
+│   │   │   ├── utils/
+│   │   │   └── index.ts
+│   │   └── package.json
+│   ├── dashboard/
+│   │   ├── src/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── layouts/
+│   │   │   ├── hooks/
+│   │   │   ├── services/
+│   │   │   ├── config/
+│   │   │   └── styles/
+│   │   └── package.json
+│   └── api/
+│       └── src/
+│           ├── routes/
+│           ├── middleware/
+│           ├── services/
+│           └── index.ts
+├── packages/
+│   ├── shared/
+│   ├── embed-builder/
+│   └── validation/
+├── prisma/
+│   └── schema.prisma
+├── assets/
+│   ├── branding/
+│   ├── banners/
+│   ├── thumbnails/
+│   └── emojis/
+├── scripts/
+│   ├── register-commands.ts
+│   ├── validate-config.ts
+│   └── backup.ts
+├── docs/
+│   ├── INSTALLATION.md
+│   ├── CONFIGURATION.md
+│   ├── COMMANDS.md
+│   ├── PERMISSIONS.md
+│   └── TROUBLESHOOTING.md
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+├── README.md
+└── LICENSE
+```
+
+You may improve this structure when technically necessary, but preserve clear separation between commands, interactions, database operations, integrations, and the dashboard.
+
+Every command should have its own maintainable module or a clearly separated command definition. Avoid a giant file containing the entire bot.
+
+## 5. ALL 50 PRIMARY SLASH COMMANDS
+
+Implement these commands as actual Discord application commands.
+
+### Order management
+
+1. `/order-create`
+2. `/order-status`
+3. `/order-cancel`
+4. `/order-list`
+5. `/order-claim`
+6. `/order-complete`
+7. `/order-submit`
+8. `/order-review`
+9. `/order-tip`
+
+### Creative tools
+
+10. `/showcase`
+11. `/ai-idea`
+12. `/ai-palette`
+13. `/ai-lore`
+14. `/ai-slogan`
+15. `/ai-name`
+
+AI features must use a configurable provider and server-side API keys. Include graceful handling for missing keys, rate limits, and failed requests. Do not claim a design file has been generated when only text has been generated.
+
+### Ticket system
+
+16. `/ticket-open`
+17. `/ticket-close`
+18. `/ticket-add`
+19. `/ticket-remove`
+20. `/ticket-transcript`
+21. `/ticket-claim`
+22. `/ticket-transfer`
+23. `/ticket-priority`
+
+### Applications
+
+24. `/apply-designer`
+25. `/apply-staff`
+26. `/app-accept`
+27. `/app-deny`
+28. `/app-review`
+
+### Community and information
+
+29. `/server-info`
+30. `/rules`
+31. `/department-info`
+32. `/price-list`
+33. `/schedule`
+34. `/announcement`
+
+### Moderation
+
+35. `/ban`
+36. `/kick`
+37. `/mute`
+38. `/unmute`
+39. `/warn`
+40. `/warnings`
+41. `/clearwarn`
+42. `/purge`
+43. `/lock`
+44. `/unlock`
+
+### Utilities and profiles
+
+45. `/help`
+46. `/botinfo`
+47. `/ping`
+48. `/profile`
+49. `/leaderboard`
+50. `/credits`
+
+Also implement the additional commands and subcommands required elsewhere in this specification, including:
+
+- `/botsay`
+- `/ticket-create-panel`
+- `/services`
+- `/store`
+- `/giveaway`
+- `/release`
+- `/group-info`
+- `/about`
+- `/report`
+- `/manage hosting`
+- `/manage hosting pricing`
+- `/manage services`
+- `/manage settings`
+- `/manage status`
+
+Use native Discord slash-command subcommands where appropriate. If Discord's command naming, option, or registration limits require adjustments, preserve the requested functionality through sensible subcommands.
+
+## 6. PERSISTENT INTERACTIVE TICKET PANEL
+
+Create a permanent ticket panel that can be posted in a configured Discord channel.
+
+It must remain functional after:
+
+- Bot restarts.
+- Server restarts.
+- Deployments.
+- Dashboard restarts.
+
+The panel should be an elegant branded embed with a title such as:
+
+**Silence Designs | Support Center**
+
+Description:
+
+"Welcome to Silence Designs Support. Select the appropriate option below to contact our team. Please provide accurate information so we can assist you efficiently."
+
+Include a persistent dropdown menu with configurable categories:
+
+- Place a Design Order.
+- General Support.
+- Report a Member.
+- Report a Designer.
+- Billing and Purchases.
+- Partnerships.
+- Advertisements.
+- Other Inquiry.
+
+When a customer chooses a category, create a ticket channel under the configured category and show the appropriate form.
+
+### Order form
+
+Use a Discord modal or a guided multi-step interaction to collect:
+
+- Roblox username.
+- Discord username, automatically populated where possible.
+- Service type.
+- What the customer wants.
+- Description and specifications.
+- Preferred colors.
+- Text to include.
+- Reference image URLs.
+- Additional details.
+- Preferred budget or pricing tier.
+
+Discord modals have a limited number of input components and text-input sizes. If the form exceeds those limits, split it into multiple steps instead of creating an invalid modal.
+
+Before final submission, show a review and confirmation step. Create the order record only after confirmation.
+
+### Support form
+
+For general support, do not force users to fill out an order questionnaire.
+
+Ask:
+
+- What do you need help with?
+- Please describe your issue.
+- Optional reference ID, purchase information, or screenshots.
+
+Create the support ticket with the user's inquiry already displayed.
+
+### Report form
+
+Ask for:
+
+- Person being reported.
+- Their Discord ID or username, if known.
+- Reason for the report.
+- Supporting evidence or links.
+- Additional context.
+
+Make report tickets private and visible only to the reporting user and authorized support, administration, or management roles.
+
+Do not reveal private reports to the reported person.
+
+### Ticket embed
+
+When a ticket opens, show a professional embed:
+
+**Thanks for contacting support — @username**
+
+"A member of our team will assist you shortly. Provide all relevant information regarding your issue. Kindly refrain from pinging agents while waiting for a response."
+
+Include an Information section:
+
+- Discord user and ID.
+- Roblox username and profile link, when available.
+- Roblox account creation/join information only when verified through a reliable source.
+- Ticket category.
+- Ticket reference ID.
+- Creation time.
+
+Include an Inquiry section containing the user's actual submitted question or request.
+
+Use the following buttons:
+
+- **Claim Ticket** — blue or neutral accent.
+- **Close Ticket** — neutral or red accent.
+- **Report** — red accent, for reporting an issue to the authorized team.
+
+Only authorized support, administration, or management members may claim tickets. Enforce this server-side, not just by hiding buttons.
+
+Ticket assignment must be exclusive unless management explicitly overrides it.
+
+Staff must be able to add or remove users, transfer tickets, set priority, and generate transcripts.
+
+### Ticket closure receipt
+
+When a ticket is closed, generate a transcript and send a closure receipt to the ticket creator by DM when possible.
+
+Use this format:
+
+**Ticket Closure Receipt**
+
+"Your support ticket was resolved and has now been closed."
+
+"If you believe this ticket was closed in error or you need further assistance regarding the same issue, you may open a new ticket and include the Reference ID above so staff can quickly locate the previous conversation. Thank you for contacting us!"
+
+Fields:
+
+- Handler.
+- Reference ID, such as `REF-B2EB6F7E`.
+- Closure Reason.
+- Closure date.
+- Ticket category.
+
+Generate unique reference IDs and store them permanently.
+
+If DMs are disabled, log the delivery failure and retain the receipt and transcript for staff access.
+
+## 7. ORDER MANAGEMENT SYSTEM
+
+Build a complete order lifecycle:
+
+Draft → Submitted → Pending Review → Accepted → In Progress → Awaiting Payment, if applicable → Completed.
+
+Also support Denied, Cancelled, and On Hold.
+
+Each order needs:
+
+- Unique order ID.
+- Customer.
+- Assigned designer.
+- Service type.
+- Description.
+- Reference images.
+- Estimated price.
+- Final agreed price.
+- Status.
+- Created and updated timestamps.
+- Internal notes.
+- Relevant ticket reference.
+- Review and completion information.
+
+Provide customer and staff commands to check order status.
+
+Prevent unauthorized users from editing or cancelling someone else's order.
+
+Designers should be able to claim available orders, update progress, request clarification, and complete orders.
+
+Notify customers when the order status changes, without unnecessary pings.
+
+The `/order-review` command should allow customers to review eligible completed orders. Validate review eligibility and prevent duplicate reviews.
+
+## 8. MARKETPLACE AND ADVERTISING
+
+Create a professional Marketplace embed and interactive panel.
+
+### Marketplace pricing
+
+Use these initial configurable prices:
+
+| Advertisement | Price |
+|---|---:|
+| No Ping | 150 |
+| Here Ping | 350 |
+| Everyone Ping | 600 |
+| Your Own Channel | 800 |
+| Priority Add-on | 400 |
+| Sponsored Giveaway Add-on | 200 |
+
+Use the correct currency configured by management. Do not silently label these amounts as Robux or USD until the currency is confirmed in settings.
+
+The Your Own Channel package includes the Everyone Ping option if configured to do so, and the temporary channel is removed after one month. Warn customers about channel deletion before purchase.
+
+Priority and Sponsored Giveaway are add-ons, not standalone advertisements.
+
+### Marketplace rules
+
+Create a Rulebook embed or page containing:
+
+**Partnerships**
+
+- Your server must have at least 100 members.
+- Your server must be SFW.
+- Your server must be fully established.
+- No ping will be sent for partnerships.
+- You must comply with Discord and applicable ER:LC/PRC terms of service.
+- Your staff and community must be professional, respectful, and active.
+- Silence Designs reserves the right to deny any partnership.
+- Design servers are not eligible.
+
+**Paid Advertisements**
+
+- Your server must be SFW.
+- Your server must be fully established.
+- Design servers are not eligible.
+- Your staff and community must be professional, respectful, and active.
+- Paid advertisements cannot be exchanged for free advertisements.
+- You must purchase the required ping option.
+- Paid advertisements enter the queue after purchase confirmation.
+- Advertisement purchases are non-refundable under the configured sales policy.
+
+**Sponsored Giveaways**
+
+- You must purchase the required paid-advertisement ping.
+- The sponsor must fund the giveaway prize.
+- The same eligibility rules as paid advertisements apply.
+- Giveaway prizes, funding, and publication details must be approved before posting.
+
+**Order Conduct**
+
+- Respect all designers.
+- Designers have the right to deny an order.
+- Be respectful to staff in tickets.
+- Do not ping the Executive Team or higher staff roles.
+- Unauthorized staff pings may result in a timeout from Discord Staff.
+- Repeated harassment or abuse may lead to additional moderation.
+
+Make the role names and sanction settings configurable.
+
+### Paid advertisement workflow
+
+Build an advertisement purchase and queue system.
+
+After a customer submits an advertisement, create a review record and display its queue position.
+
+Staff should be able to approve, reject, schedule, publish, and mark an advertisement as completed.
+
+Use this disclosure on published paid-advertisement embeds:
+
+"This is a paid advertisement. This server is not affiliated with Silence Designs."
+
+The embed should contain:
+
+- Advertisement title.
+- Server name.
+- Prize or promotion.
+- Server invite link.
+- Server icon or banner.
+- Publication date.
+- Purchased ping type.
+- Optional giveaway link.
+
+Only send a ping if it was explicitly purchased and approved. Prevent accidental `@everyone` or `@here` mentions. Validate invite links and use Discord's allowed-mentions controls.
+
+## 9. FAQ AND HELP CENTER
+
+Build a premium FAQ page and `/help` interface.
+
+Display questions as expandable or selectable rows. Clicking a question reveals its answer with a smooth scrolling or accordion interaction.
+
+Include at least these 15 questions:
+
+1. Why are my orders closed?
+2. When will applications open?
+3. My purchase didn't go through. What should I do?
+4. Do you offer refunds?
+5. How can I affiliate or partner with Silence Designs?
+6. Can I ask Silence Designs to join my event?
+7. Where did you get your emojis and icons?
+8. What is the sponsored giveaway queue?
+9. How do I appeal a ban or moderation action?
+10. Why was my ticket closed without a reason?
+11. Can I request a member to be blacklisted or banned?
+12. How do I place a design order?
+13. How long do orders take?
+14. How do I check my order status?
+15. How do I report a designer or staff member?
+
+Use these initial answers:
+
+**Why are my orders closed?**
+
+"Orders are temporarily closed due to high demand. Our design team is currently at full capacity and focused on completing existing orders. We expect to reopen within approximately one week. Thank you for your patience."
+
+Make the answer and estimated reopening date editable in the dashboard.
+
+**When will applications open?**
+
+"Applications open when positions are available. Please check our official announcements for updates."
+
+**My purchase didn't go through. What should I do?**
+
+"Please open a Billing and Purchases support ticket and provide your order or transaction reference, along with any relevant evidence. Never share passwords, authentication codes, or private account credentials."
+
+**Do you offer refunds?**
+
+"Please review our published Master Service Agreement and the applicable purchase terms. All sales are final under our current policy, subject to any non-waivable rights or remedies required by applicable law. Contact support if a payment was duplicated or a transaction failed."
+
+**How can I affiliate or partner with Silence Designs?**
+
+"Please review our partnership requirements in the Marketplace Rulebook and submit a partnership inquiry through our support panel."
+
+**Can I ask Silence Designs to join my event?**
+
+"You may contact our team with the event details. Participation depends on availability, relevance, and management approval."
+
+**Where did you get your emojis and icons?**
+
+"Our custom emoji and icon sources may vary. Please contact management if you need credits or usage information for a specific asset."
+
+**What is the sponsored giveaway queue?**
+
+"Sponsored giveaways require an approved advertisement purchase, an eligible prize, and confirmation that the sponsor will fund the prize. Approved giveaways are scheduled according to availability and queue priority."
+
+**How do I appeal a ban or moderation action?**
+
+"Open a moderation appeal ticket and provide your Discord ID, the action you are appealing, the date if known, and a respectful explanation. Appeals are reviewed by authorized staff."
+
+**Why was my ticket closed without a reason?**
+
+"Open a new support ticket and include your previous ticket reference ID. Management can review the available transcript and closure records."
+
+**Can I request a member to be blacklisted or banned?**
+
+"You can submit a report with relevant evidence. Staff will investigate the report, but the outcome is determined by authorized management."
+
+**How do I place a design order?**
+
+"Open the ticket panel, select Place a Design Order, choose your service, and complete the guided order form."
+
+**How long do orders take?**
+
+"Completion times depend on complexity, current workload, and designer availability. Staff will provide an estimate when possible."
+
+**How do I check my order status?**
+
+"Use `/order-status` and provide the requested order reference. You can also ask for an update in your existing order ticket."
+
+**How do I report a designer or staff member?**
+
+"Open a Report ticket, provide the person's details and a clear explanation, and attach any relevant evidence. Reports are handled privately."
+
+At the bottom of the FAQ, include a prominent red-accented **Still Need Assistance?** button.
+
+When clicked, create a normal support ticket that asks what the user needs help with. Do not show the full design-order questionnaire.
+
+## 10. ROBLOX GROUP INTEGRATION
+
+Official group:
+
+https://www.roblox.com/communities/34552481
+
+Initial group information:
+
+- Name: ILE Customs.
+- Owner: ileighlin.
+- Group ID: 34552481.
+- Approximate member count supplied: 2,200.
+- Created: July 2, 2024.
+
+These are supplied example details. Keep the bot's public branding as Silence Designs. Treat ILE Customs as a separate Roblox group integration or reference until management explicitly configures the official Silence Designs group.
+
+Provide `/group-info` with:
+
+- Group name.
+- Group ID.
+- Owner.
+- Member count, when available.
+- Group description.
+- Creation date, when available.
+- Group thumbnail.
+- A clickable Roblox group link.
+
+Fetch live information through a supported Roblox API or a reliable public endpoint where possible. Cache results, handle API failures, and clearly distinguish live data from manually configured data.
+
+Do not fabricate live member counts or account creation dates.
+
+## 11. STORE PANEL
+
+Create a professional store page with the introduction:
+
+"Explore our store and browse a curated selection of products — all from one centralized location."
+
+"Please review our Master Service Agreement before making a purchase."
+
+Use this agreement link:
+
+https://docs.google.com/document/d/16LXkFBEOPLBAr8trPBIIYXH53wZbr_oFjjTtsO6hVmI/edit?usp=sharing
+
+Include a **View Our Server Store** link or button when a real destination is configured.
+
+Create dropdown categories:
+
+- Server Boosting Perks.
+- Silence Designs+ Membership.
+- Donations.
+- Advertisements.
+
+Each product should be displayed as a professional card or embed containing its name, description, benefits, price, purchase button, and any applicable terms.
+
+### Server Boosting Perks
+
+Description:
+
+"Are you interested in supporting our server by boosting? Below, you can find all the benefits offered to our Server Boosters! We appreciate every boost — perks are assigned automatically when the required Discord boost event is verified."
+
+Benefits:
+
+- Exclusive Booster role.
+- Special chat access, giveaways, and releases.
+- Media permissions.
+- 5% discount.
+
+Implement actual Discord boost detection, role assignment, and removal when the applicable boost requirement is no longer met.
+
+### Silence Designs+ Membership
+
+Benefits:
+
+- Exclusive membership role.
+- Media permissions.
+- Special chat access, giveaways, and releases.
+- 10% discount on orders.
+- Privileged order placement.
+- Early access to configured Roblox Vault releases.
+- Exclusive free releases and giveaways.
+
+Create purchase buttons for Robux and USD where appropriate.
+
+The following example product was supplied:
+
+- Roblox product: https://www.roblox.com/developer-product/9860922544/product/3602207934
+- Price: R$650 / $4.55 USD.
+
+Keep the actual Silence Designs membership product ID and payment configuration editable. Do not assign ILE Customs products to Silence Designs without management confirmation.
+
+### Donations
+
+Benefits:
+
+- Donator role.
+- Media permissions.
+- Special chat access, giveaways, and releases.
+- Community support.
+- Funding for projects and events.
+
+Example product links supplied for reference:
+
+- Small Donation, R$200: https://www.roblox.com/developer-product/9860922544/product/3602207945
+- Medium Donation, R$500: https://www.roblox.com/developer-product/9860922544/product/3602207952
+- Large Donation, R$1,000: https://www.roblox.com/developer-product/9860922544/product/3602207963
+
+Example USD equivalents supplied: $1.40, $3.50, and $7.00.
+
+Include a Custom USD Amount option only if a supported payment provider is configured. Never claim that a payment has been verified merely because someone clicks a Roblox link or uploads a screenshot.
+
+### Advertisements Store
+
+Create configurable cards for:
+
+- Instant Postage.
+- Bypass Queue.
+- Everyone Ping.
+- Here Ping.
+- No Ping.
+- Sponsored Giveaway Add-on.
+- Priority Add-on.
+- Your Own Channel.
+
+Example product links supplied for reference:
+
+- Instant Postage: https://www.roblox.com/developer-product/9860922544/product/3604739906
+- Bypass Queue: https://www.roblox.com/developer-product/9860922544/product/3602207982
+- Everyone Ping: https://www.roblox.com/developer-product/9860922544/product/3602207995
+- Here Ping: https://www.roblox.com/developer-product/9860922544/product/3602208008
+- No Ping: https://www.roblox.com/developer-product/9860922544/product/3602208027
+
+These are example product links, not confirmed Silence Designs products. The dashboard must allow administrators to replace each link, price, currency, description, and product mapping.
+
+Roblox purchase links are external. Implement a reliable verification workflow before granting paid benefits or advancing a paid-advertisement queue. If automatic verification is unavailable, use a pending-verification status for authorized staff review.
+
+## 12. SERVICES PANEL
+
+Create a professional, permanent Services embed.
+
+Use this introduction:
+
+"Our services are built to deliver high-quality results with precision and consistency. From concept to completion, every order is managed with care by our trusted creative team. Select a service below to get started."
+
+"By requesting any service, you agree to our Master Service Agreement."
+
+Link:
+
+https://docs.google.com/document/d/16LXkFBEOPLBAr8trPBIIYXH53wZbr_oFjjTtsO6hVmI/edit?usp=sharing
+
+Include buttons:
+
+- Prices.
+- Terms.
+- Status.
+- Roblox Group.
+- View Our Services.
+
+The View Our Services dropdown must include:
+
+- Clothing.
+- Livery.
+- Graphics.
+- Bot Development.
+
+Each option opens a polished embed with its description, current status, relevant prices, and a button to start an order if open.
+
+### Initial service status
+
+Use these configurable service states initially:
+
+- Clothing: Closed.
+- Livery: Closed.
+- Graphics: Closed.
+- Bot Development: Closed.
+
+Show a clear status indicator for every service.
+
+When a service is closed, display:
+
+"**[Service] is currently closed.** We are not accepting new requests for this service at the moment."
+
+When open, show that orders are being accepted.
+
+Add an authorized management command and dashboard controls to switch individual services between Open and Closed. The public Services embed must update immediately without requiring staff to repost the panel.
+
+Prevent new order submissions for closed services, while allowing staff to finish existing orders.
+
+### Service prices
+
+Disclaimer:
+
+"A 30% Roblox tax may apply to eligible Roblox transactions. Confirm the applicable payment method and tax before finalizing the order."
+
+**Graphics**
+
+"Professional graphics designed to elevate branding through clean and impactful visuals."
+
+- Logo: R$400+.
+- Banners: R$125+.
+- Banner Bundle: R$1,250+.
+- Server Bundle: R$1,750+.
+
+**Livery**
+
+"Realistic and well-aligned vehicle liveries tailored to your department or concept."
+
+- LEO: R$175+.
+- FD: R$200+.
+- Other: R$150+.
+
+**Clothing**
+
+"Custom, high-quality clothing designed with clean details and professional finishes."
+
+- Set: R$125.
+- Shirt: R$75.
+- Pants: R$50.
+
+**Bot Development**
+
+"Build a custom Discord bot without writing a single line of code. Choose the modules you want, customize them to your liking, and our team will develop, configure, and host your bot. A low monthly hosting fee keeps everything online and running smoothly."
+
+"To view hosting fees, run `/manage hosting pricing`."
+
+Pricing:
+
+"To receive an estimated price, start an order and complete the requested information. An estimated total will be provided before you submit your order. Final pricing may vary depending on the complexity and scope of your requested bot."
+
+Make all pricing editable.
+
+### Banner Bundle
+
+Show:
+
+**What's included?**
+
+- 1 server banner.
+- 10 embed banners.
+- 1 footer banner.
+
+"Starts at R$1,250. The Banner Bundle price varies based on specifications and details provided."
+
+### Discord Server Bundle
+
+Show:
+
+**What's included?**
+
+- Complete channel setup.
+- Complete role setup.
+- Role and channel permission setup.
+- Bot setup, up to 3 bots; additional complexity may increase the price.
+
+"Starts at R$2,000. The Discord Server Bundle varies in price based on specifications and details provided. Optional bot setup has a maximum of 3 bots and may increase the bundle price."
+
+## 13. BOT HOSTING MANAGEMENT
+
+Implement `/manage hosting` and `/manage hosting pricing`.
+
+### Hosting pricing
+
+Use this embed:
+
+**Hosting Pricing**
+
+"The first 30 days after a new bot order is logged are free."
+
+- Monthly: R$250 / $2.25 — 30 days.
+- Quarterly (3 Months): R$500 / $4.50 — 90 days.
+- Bi-Annually (6 Months): R$900 / $8.10 — 180 days.
+
+"Hosting is only available for bots ordered through Silence Designs."
+
+These are initial editable configuration values.
+
+### Manage hosting
+
+When a user runs `/manage hosting`, show their registered hosting records.
+
+If they have none, display:
+
+"Hi, @username — you currently do not have any bots hosted."
+
+If they have hosted bots, show each bot's name, status, next renewal date, hosting plan, and available management actions.
+
+Include buttons to view details, renew, or contact support.
+
+Do not invent active hosting subscriptions. Only display records in the database.
+
+Only administrators or authorized hosting managers can change another user's hosting configuration.
+
+Implement actual hosting expiration and renewal tracking. Do not claim that the bot itself is hosting another bot unless that hosting infrastructure has genuinely been provisioned.
+
+## 14. GIVEAWAY SYSTEM
+
+Build a real interactive giveaway system with a permanent embed and buttons.
+
+The embed must include:
+
+- Prize.
+- Sponsor.
+- Server name.
+- Server icon or image.
+- Number of winners.
+- Start date.
+- End date.
+- Countdown or remaining duration.
+- Entry count.
+- Giveaway status.
+- Join Giveaway button.
+- View Participants button, with suitable privacy controls.
+
+Example:
+
+**1 Month of Nitro — Giveaway in the Server**
+
+"This giveaway is independently hosted and is sponsored by [Sponsor]. This giveaway is not sponsored by Silence Designs. You must be in the server before winning."
+
+Show:
+
+- Winners: 10.
+- Duration: Configured end time.
+- Server: Sponsor's server.
+- Server icon or configured image.
+- Server invite link.
+
+When a user clicks **Join Giveaway**, reply privately:
+
+"You are entered. Good luck!"
+
+The entry count must update correctly.
+
+Prevent duplicate entries and validate eligibility at entry and winner-selection time.
+
+When the giveaway ends, select winners fairly using a secure random process, record the outcome, and announce the results. Allow authorized staff to reroll and cancel giveaways.
+
+Support independent giveaways and sponsored giveaways. Display sponsor disclosures correctly.
+
+Do not claim that winners received a prize until delivery has been confirmed.
+
+## 15. PAID ADVERTISEMENT EMBEDS
+
+Provide a configurable `/botsay` command for authorized staff.
+
+It must support creating professional rich embeds using modal fields or a guided form:
+
+- Embed title.
+- Description.
+- Multiple sections or fields.
+- Image URL.
+- Thumbnail URL.
+- Footer text.
+- Footer image.
+- Embed color.
+- Optional author name and icon.
+- Server name.
+- Server invite link.
+- Optional role ping.
+- Target channel.
+
+Support safe Markdown formatting, including headings, bold text, bullet lists, and links where permitted.
+
+Preview the embed before publishing. Allow staff to confirm, edit, or cancel.
+
+Validate image URLs, channel permissions, allowed mentions, and Discord embed limits.
+
+For paid advertisements, use the specific advertisement template defined earlier. Do not use the generic template when a specialized paid-advertisement layout is required.
+
+## 16. RELEASE COMMAND
+
+Implement `/release` as a form-driven command that can attach a release ZIP file and its preview image.
+
+The published embed should contain:
+
+- Custom release emoji.
+- Release title.
+- Description.
+- Included items.
+- Credits.
+- Release ping role, if configured.
+- Preview image.
+- Attached ZIP file.
+
+Example:
+
+**Free Release**
+
+"This resource is completely free for everyone! You are more than welcome to use it, customize the files to fit your needs, and utilize it across any of your own projects. Enjoy!"
+
+**Included Item(s):**
+
+- Chicago Police FPIU (2020).
+
+**Credits:** Configured creator.
+
+**Ping:** Configured Releases role.
+
+The ZIP file must actually be attached to the Discord message. If the ZIP is too large for Discord's attachment limit, explain the issue and require a configured file-hosting link.
+
+Support both free and paid release categories, with clear terms and pricing if applicable.
+
+## 17. WELCOME AND PURCHASE NOTIFICATIONS
+
+Implement welcome and verified-purchase notification embeds.
+
+Example:
+
+**We're excited to have you, @username!**
+
+"The [Package Name] package is now yours. We hope you love it — enjoy!"
+
+Include a configured footer image and brand emoji.
+
+Do not automatically grant paid package roles based solely on a button click, message, or unverified receipt.
+
+Support verified purchase events where available. Otherwise, use pending verification and staff approval.
+
+## 18. ABOUT AND BOT STATUS
+
+### `/about`
+
+Create a premium About embed for the bot and its creator.
+
+Creator information:
+
+- Name: Carlos473.
+- Discord user ID: 1025813762684502168.
+- Role: Bot Developer / Creator.
+- Project: Silence Designs Bot.
+
+Include:
+
+- Bot name and version.
+- Bot avatar.
+- Creator's Discord profile mention.
+- Developer ID.
+- Bot uptime.
+- Server count.
+- Total cached user count, clearly labeled as approximate if applicable.
+- Ping / API latency.
+- Library and runtime version.
+- Links to configured support, website, and documentation.
+- Credits for contributors.
+
+Use a professional layout and only display factual runtime information.
+
+### Rotating status
+
+Configure a rotation of up to 100 activity messages, changing every 30 seconds.
+
+Use Silence Designs branding, for example:
+
+- 🌿 Powering Silence Designs.
+- 🎨 Designing something exceptional.
+- 🚘 ER:LC Creative Services.
+- 📦 Managing design orders.
+- 🎫 Supporting our community.
+- ✨ Silence Designs | Premium Creative Services.
+
+Allow administrators to edit, reorder, enable, or disable activity messages in the dashboard.
+
+Persist the activity list. Cycle through the enabled messages without randomly duplicating the same activity unnecessarily.
+
+Use Discord-supported activity types and respect Discord rate limits. If there are no enabled messages, use a configured default.
+
+## 19. MODERATION AND PERMISSIONS
+
+Implement the moderation commands with proper authorization checks, audit logging, and clear responses.
+
+Support:
+
+- Ban and unban where appropriate.
+- Kick.
+- Timeout and removal of timeout.
+- Warnings and warning history.
+- Clearing warnings with a logged reason.
+- Purging messages within Discord's API constraints.
+- Locking and unlocking channels.
+
+Require appropriate Discord permissions and configured staff roles.
+
+Log every moderation action with:
+
+- Moderator.
+- Target user.
+- Action.
+- Reason.
+- Timestamp.
+- Relevant message, channel, and case reference.
+
+Protect against self-moderation, role hierarchy violations, missing permissions, and accidental mass actions.
+
+Add confirmation for destructive actions.
+
+Use Discord's built-in timeout mechanism for `/mute` and `/unmute` where appropriate.
+
+## 20. APPLICATIONS AND DESIGNER MANAGEMENT
+
+Support Designer and Staff applications through structured forms.
+
+Store each application with:
+
+- Applicant ID.
+- Submitted answers.
+- Submission date.
+- Review status.
+- Reviewer.
+- Internal notes.
+- Decision reason.
+
+Allow authorized staff to accept or deny applications.
+
+DM the applicant when possible and record delivery failures.
+
+Include a private application review interface in the dashboard.
+
+## 21. DASHBOARD PAGES
+
+Build a real administrator dashboard with navigation.
+
+### Overview
+
+- Bot online/offline state.
+- Uptime.
+- API latency.
+- Guild information.
+- Recent tickets.
+- Active orders.
+- Open applications.
+- Advertisement queue.
+- Giveaway status.
+- Service availability.
+- Recent moderation logs.
+
+### Commands
+
+- List every registered command.
+- View description and permissions.
+- Enable or disable configurable modules.
+- View registration and execution errors.
+- Manage command settings.
+
+Do not promise that an arbitrary Discord application command can always be disabled per guild through a simple API toggle. Implement supported module-level restrictions or update command registration where appropriate.
+
+### Tickets
+
+- Manage panel messages.
+- Configure ticket categories.
+- Configure staff roles.
+- Configure transcripts.
+- Manage ticket counters and reference IDs.
+- View active and closed tickets.
+- Configure close reasons and claim permissions.
+
+### Orders
+
+- View, search, filter, assign, and update orders.
+- Manage prices and service types.
+- Set availability.
+- View customer details permitted to staff.
+- Configure status notifications.
+
+### Services
+
+Toggle Clothing, Livery, Graphics, and Bot Development between Open and Closed.
+
+Update the public service panel immediately.
+
+### Marketplace
+
+- Manage ping prices.
+- Manage add-ons.
+- Manage advertising queue.
+- Approve or reject advertisements.
+- Configure channel deletion rules.
+- Manage advertisement templates.
+
+### Store
+
+- Edit product names, prices, currencies, and descriptions.
+- Update Roblox product links.
+- Configure purchase verification.
+- Configure roles and benefits.
+- Manage membership and donation products.
+
+### Giveaways
+
+- Create, edit, end, and cancel giveaways.
+- View participants and winners.
+- Manage sponsor information.
+- Configure giveaway channels.
+
+### Branding and embeds
+
+Provide a reusable embed builder with a live preview.
+
+Support:
+
+- Titles and descriptions.
+- Fields.
+- Images and thumbnails.
+- Footer text and images.
+- Author information.
+- Colors.
+- Emojis.
+- Buttons and select menus.
+- Target channels.
+- Saveable templates.
+
+Allow administrators to upload PNGs or provide image URLs. Validate and store assets securely.
+
+### Integrations
+
+- Discord guild and role configuration.
+- Roblox group configuration.
+- AI provider configuration.
+- File hosting.
+- External links.
+- Optional payment verification.
+- Hosting infrastructure configuration.
+
+### Logs and settings
+
+- Audit logs.
+- Bot errors.
+- Ticket events.
+- Purchase verification events.
+- Role changes.
+- Service availability.
+- Activity rotation.
+- Feature toggles.
+
+## 22. DATABASE AND SECURITY
+
+Use a properly designed relational database.
+
+Create tables or models for:
+
+- Guild configuration.
+- Users and linked Roblox accounts.
+- Tickets.
+- Ticket participants.
+- Ticket transcripts.
+- Orders.
+- Order history.
+- Applications.
+- Moderation cases.
+- Warnings.
+- Advertisements.
+- Advertisement queue entries.
+- Store products.
+- Purchase verification records.
+- Memberships.
+- Hosting subscriptions.
+- Giveaways.
+- Giveaway entries.
+- Giveaway winners.
+- Reviews.
+- Services and prices.
+- Embed templates.
+- Activity rotation.
+- Audit logs.
+
+Add appropriate indexes, foreign keys, unique constraints, timestamps, and transaction handling.
+
+Security requirements:
+
+- Never expose the bot token to the frontend.
+- Use secure dashboard sessions.
+- Validate all API requests.
+- Apply role-based authorization.
+- Use rate limiting.
+- Prevent unauthorized ticket access.
+- Sanitize user-provided URLs and embed content.
+- Prevent mention abuse.
+- Avoid SQL injection and unsafe dynamic execution.
+- Do not include arbitrary shell execution, eval, or public remote code execution.
+- Store secrets in environment variables.
+- Include a documented backup and recovery strategy.
+- Implement user-data retention settings for transcripts and logs.
+- Provide an administrator-configurable data export and deletion process where appropriate.
+
+## 23. INSTALLATION AND SELF-HOSTING
+
+I want to download the finished project and host it myself from my own files.
+
+Include:
+
+- Complete source code.
+- `README.md`.
+- `.env.example`.
+- `package.json` scripts.
+- Database schema and migrations.
+- Dockerfile.
+- Docker Compose configuration.
+- Discord application setup instructions.
+- Required OAuth2 redirect URLs.
+- Bot invitation and permission instructions.
+- Slash-command registration instructions.
+- Database setup instructions.
+- Local development instructions.
+- Production deployment instructions.
+- Backup and restore instructions.
+- Troubleshooting guide.
+
+Include scripts for development, production startup, database migrations, validation, and command registration.
+
+Provide a build or export process that produces a downloadable ZIP containing the complete project without secrets, dependency folders, or generated build caches.
+
+Make sure a fresh installation can be reproduced from the README.
+
+Do not require a paid AI builder or a proprietary hosted bot platform to run the project. External infrastructure costs may still apply.
+
+## 24. IMPLEMENTATION REQUIREMENTS
+
+Build in phases while preserving one coherent application.
+
+**Phase 1 — Foundation**
+
+- Project structure.
+- Database.
+- Discord client.
+- Command loader.
+- Interaction router.
+- Permission middleware.
+- Configuration.
+- Dashboard shell.
+- Secure API.
+
+**Phase 2 — Core workflows**
+
+- Ticket system.
+- Order management.
+- Services and prices.
+- Applications.
+- Moderation.
+- Audit logging.
+
+**Phase 3 — Community and commercial features**
+
+- Marketplace.
+- Advertisement queue.
+- Store.
+- Roblox integration.
+- Giveaways.
+- Release command.
+- Purchase verification.
+- Hosting management.
+
+**Phase 4 — Dashboard and polish**
+
+- All dashboard settings.
+- Branding manager.
+- Embed builder.
+- Activity rotation.
+- Live status updates.
+- Responsive design.
+- Error states and loading states.
+
+**Phase 5 — Testing and delivery**
+
+- Verify all primary commands are registered.
+- Verify every button, dropdown, modal, and form.
+- Test database persistence after restart.
+- Test role and permission restrictions.
+- Test duplicate giveaway entries.
+- Test unauthorized ticket claims.
+- Test invalid configuration and missing environment variables.
+- Test deployment from a clean installation.
+- Generate the downloadable source ZIP.
+
+Do not mark a feature complete merely because its interface exists. Every feature must have a working backend, proper validation, and persistent storage where necessary.
+
+If the entire project cannot fit in a single generation, finish one complete phase at a time, maintain a checklist, and continue from the existing codebase without replacing working files or removing previously implemented functionality.
+
+## 25. FINAL ACCEPTANCE CRITERIA
+
+The project is complete when:
+
+1. All 50 primary commands are implemented.
+2. Additional required commands and subcommands are implemented.
+3. The ticket panel persists and remains functional after restarts.
+4. Orders have a real lifecycle and persistent history.
+5. The service status panel updates dynamically.
+6. The FAQ and support ticket workflow work end to end.
+7. Advertisements have a functional review queue.
+8. Store and Roblox product links are configurable.
+9. Giveaways have real entries, end times, and recorded winners.
+10. The release command can attach an actual ZIP file.
+11. The bot supports the rotating activity system.
+12. The dashboard uses real backend data and permissions.
+13. The bot and dashboard can be installed from the supplied documentation.
+14. The source project can be exported as a ZIP.
+15. There are no exposed secrets, fake success messages, or nonfunctional placeholder controls.
+
+Start by inspecting the current Lovable project. If it is empty, create the project structure and implement Phase 1. If code already exists, preserve it and integrate the new architecture safely.
+
+Prioritize a reliable, professional foundation that can grow into a premium Silence Designs ecosystem. Do not sacrifice functionality for appearance, and do not sacrifice visual quality for functionality.
